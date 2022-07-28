@@ -1,6 +1,7 @@
 import 'package:eshop/ui/screens/constants/constants.dart';
 import 'package:eshop/ui/screens/global_widgets/already_account.dart';
 import 'package:eshop/ui/screens/global_widgets/global_widgets.dart';
+import 'package:eshop/ui/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,13 +12,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool isClicked = true;
+  bool isObsecure = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             eMailField(),
             const SizedBox(
@@ -25,19 +28,23 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             passwordField(),
             TextButtonWidget(
-                press: () => Navigator.pushNamed(context, '/forget_password'),
-                title: 'Forget Password'),
+              press: () => Navigator.pushNamed(context, '/forget_password'),
+              title: 'Forget Password',
+            ),
             const SizedBox(
               height: 20,
             ),
             RoundedButton(press: () {}, title: "Login"),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
             AlreadyHaveAnAccount(
               text1: 'Need an account?',
               text2: ' SignUp',
-              press: () => Navigator.pushNamed(context, '/signup_screen'),
+              press: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SignUpScreen())),
             ),
           ],
         ),
@@ -47,23 +54,26 @@ class _LoginScreenState extends State<LoginScreen> {
 
   eMailField() => TextField(
         decoration: InputDecoration(
-          hintText: 'Email',
-          filled: true,
-          fillColor: kFillColor,
-        ),
+            hintText: 'Email',
+            filled: true,
+            fillColor: kFillColor,
+            border: InputBorder.none),
       );
 
   passwordField() => TextField(
-        obscureText: isClicked,
-        onTap: () {
-          setState(() {
-            isClicked != isClicked;
-          });
-        },
+        obscureText: isObsecure,
         decoration: InputDecoration(
             hintText: 'Password',
             filled: true,
             fillColor: kFillColor,
-            suffixIcon: const Icon(Icons.key)),
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+              icon: Icon(isObsecure ? Icons.visibility_off : Icons.visibility),
+              onPressed: () {
+                setState(() {
+                  isObsecure = !isObsecure;
+                });
+              },
+            )),
       );
 }

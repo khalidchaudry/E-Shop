@@ -12,6 +12,7 @@ class SignUpScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             userNameField(),
             const SizedBox(
@@ -29,9 +30,9 @@ class SignUpScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            RoundedButton(press: () {}, title: "Login"),
+            RoundedButton(press: () {}, title: "SignUp"),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
             AlreadyHaveAnAccount(
               text1: 'Already have an account?',
@@ -49,21 +50,21 @@ class SignUpScreen extends StatelessWidget {
             hintText: 'Enter your Name',
             filled: true,
             fillColor: kFillColor,
-            suffixIcon: const Icon(Icons.key)),
+            border: InputBorder.none),
       );
   phoneNumberField() => TextField(
         decoration: InputDecoration(
             hintText: 'Enter your Phone Number',
             filled: true,
             fillColor: kFillColor,
-            suffixIcon: const Icon(Icons.key)),
+            border: InputBorder.none),
       );
   eMailField() => TextField(
         decoration: InputDecoration(
-          hintText: 'Enter your Email',
-          filled: true,
-          fillColor: kFillColor,
-        ),
+            hintText: 'Enter your Email',
+            filled: true,
+            fillColor: kFillColor,
+            border: InputBorder.none),
       );
 
   passwordField() => TextField(
@@ -71,6 +72,6 @@ class SignUpScreen extends StatelessWidget {
             hintText: 'Enter your Password',
             filled: true,
             fillColor: kFillColor,
-            suffixIcon: const Icon(Icons.key)),
+            border: InputBorder.none),
       );
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class AlreadyHaveAnAccount extends StatelessWidget {
@@ -10,15 +9,21 @@ class AlreadyHaveAnAccount extends StatelessWidget {
   final Function() press;
   @override
   Widget build(BuildContext context) {
-    return RichText(
-        text: TextSpan(children: [
-      TextSpan(
-        text: text1,
-      ),
-      TextSpan(
-          text: text2.toUpperCase(),
-          style: const TextStyle(color: Colors.deepPurpleAccent),
-          recognizer: TapGestureRecognizer()..onTap = () => press),
-    ]));
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(
+          text1,
+          style: const TextStyle(color: Colors.black),
+        ),
+        TextButton(
+            onPressed: press,
+            child: Text(
+              text2.toUpperCase(),
+              style: const TextStyle(
+                  color: Colors.deepPurpleAccent, fontWeight: FontWeight.bold),
+            ))
+      ],
+    );
   }
 }

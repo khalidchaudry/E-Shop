@@ -13,6 +13,9 @@ class TextButtonWidget extends StatelessWidget {
           shape: const StadiumBorder(),
         ),
         onPressed: press,
-        child: Text(title));
+        child: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ));
   }
 }
