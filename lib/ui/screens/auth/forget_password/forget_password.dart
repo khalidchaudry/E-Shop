@@ -3,7 +3,12 @@ import 'package:eshop/ui/screens/global_widgets/global_widgets.dart';
 import 'package:flutter/material.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
-  const ForgetPasswordScreen({Key? key}) : super(key: key);
+  ForgetPasswordScreen({Key? key}) : super(key: key);
+  TextEditingController emailController = TextEditingController();
+
+  forgetPassword() async {
+    await authController.forgetPassword(email: emailController.text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,7 @@ class ForgetPasswordScreen extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-            RoundedButton(press: () {}, title: "Reset Password"),
+            RoundedButton(press: forgetPassword, title: "Reset Password"),
           ],
         ),
       ),
@@ -25,6 +30,7 @@ class ForgetPasswordScreen extends StatelessWidget {
   }
 
   eMailField() => TextField(
+        controller: emailController,
         decoration: InputDecoration(
             hintText: 'Email',
             filled: true,

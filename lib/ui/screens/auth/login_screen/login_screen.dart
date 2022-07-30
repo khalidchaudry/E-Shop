@@ -1,6 +1,5 @@
 import 'package:eshop/ui/screens/constants/constants.dart';
 import 'package:eshop/ui/screens/global_widgets/already_account.dart';
-import 'package:eshop/ui/screens/global_widgets/global_widgets.dart';
 import 'package:eshop/ui/screens/screens.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +12,26 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool isObsecure = false;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool isLoading = false;
+  loginUser() async {
+    setState(() {
+      isLoading == false;
+    });
+    String res = await authController.loginUser(
+        email: emailController.text, password: passwordController.text);
+    setState(() {
+      isLoading == true;
+    });
+    if (res == 'Successfully') {
+      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Congarats! You are  logged in successfully')));
+    } else {
+      Navigator.pushNamed(context, '/bottom_nav_bar');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +53,23 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(
               height: 20,
             ),
-            RoundedButton(press: () {}, title: "Login"),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.purple,
+                    shape: const StadiumBorder(),
+                    minimumSize: const Size(double.infinity, 60)),
+                onPressed: () {
+                  loginUser();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BottomNavBar()));
+                },
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : const Text('Login')),
             const SizedBox(
               height: 10,
             ),
@@ -53,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   eMailField() => TextField(
+        controller: emailController,
         decoration: InputDecoration(
             hintText: 'Email',
             filled: true,
@@ -61,6 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
   passwordField() => TextField(
+        controller: passwordController,
         obscureText: isObsecure,
         decoration: InputDecoration(
             hintText: 'Password',
