@@ -11,7 +11,7 @@ class CartWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const Text(
-          'Hi, What are your \nLooking for? 🙄',
+          'Hi, What are you \nLooking for? 🙄',
           style: TextStyle(
               fontSize: 25, fontWeight: FontWeight.bold, color: Colors.purple),
         ),
