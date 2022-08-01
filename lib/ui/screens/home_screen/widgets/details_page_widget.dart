@@ -8,13 +8,16 @@ class DetailsPageWidget extends StatelessWidget {
   final int index;
   @override
   Widget build(BuildContext context) {
-    final detailsPageData =
-        Provider.of<ProductsModelProvider>(context).productModelProvider;
+    final detailsData = Provider.of<ProductsModelProvider>(context);
+    final detailsPageData = detailsData.productModelProvider;
     final cartProvider = Provider.of<CartModelProvider>(context);
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 40,
+          ),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Container(

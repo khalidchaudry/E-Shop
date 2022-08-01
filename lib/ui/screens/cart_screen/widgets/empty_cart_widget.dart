@@ -1,4 +1,5 @@
 import 'package:eshop/ui/screens/assets_path/assets_path.dart';
+import 'package:eshop/ui/screens/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class EmptyCartWidget extends StatelessWidget {
@@ -18,7 +19,8 @@ class EmptyCartWidget extends StatelessWidget {
           height: 20,
         ),
         ElevatedButton.icon(
-          onPressed: () {},
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const HomeScreen())),
           label: const Text('Shop Now'),
           icon: const Icon(Icons.shopping_bag_outlined),
         )

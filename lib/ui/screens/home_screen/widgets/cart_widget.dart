@@ -19,8 +19,8 @@ class CartWidget extends StatelessWidget {
           onPressed: () {},
           child: Container(
               alignment: Alignment.center,
-              width: 70,
-              height: 70,
+              width: 60,
+              height: 60,
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
