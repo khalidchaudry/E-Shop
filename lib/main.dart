@@ -1,3 +1,4 @@
+import 'package:eshop/providers/cart_model_provider.dart';
 import 'package:eshop/providers/product_list_provider.dart';
 import 'package:eshop/providers/product_model_provider.dart';
 import 'package:eshop/ui/screens/auth/login_screen/login_screen.dart';
@@ -15,6 +16,7 @@ main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => ProductListProvider()),
     ChangeNotifierProvider(create: (_) => ProductsModelProvider()),
+    ChangeNotifierProvider(create: (_) => CartModelProvider()),
   ], child: const MyApp()));
 }
 
