@@ -42,7 +42,7 @@ class DetailsPageWidget extends StatelessWidget {
               ),
             ),
           ),
-          Image.asset(
+          Image.network(
             detailsPageData[index].productImage,
             fit: BoxFit.cover,
           ),

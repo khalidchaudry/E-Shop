@@ -1,10 +1,87 @@
-import 'package:eshop/ui/screens/assets_path/assets_path.dart';
+import 'dart:io';
+
+import 'package:eshop/controllers/upload_product_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../constants/constants.dart';
 
-class UploadScreen extends StatelessWidget {
+class UploadScreen extends StatefulWidget {
   const UploadScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UploadScreen> createState() => _UploadScreenState();
+}
+
+class _UploadScreenState extends State<UploadScreen> {
+  TextEditingController productNameController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+
+  TextEditingController productDescController = TextEditingController();
+
+  TextEditingController productCategoryController = TextEditingController();
+  TextEditingController productQuantityController = TextEditingController();
+
+  File? image;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   uploadData();
+  // }
+
+  // Pick image with camera
+  getImageFromCamera() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.camera);
+    final imageFromCamera = pickedImage == null ? null : File(pickedImage.path);
+    setState(() {
+      image = imageFromCamera;
+    });
+  }
+  // Pick image from Gallery
+
+  getImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+    );
+    final pickedImageFile = pickedImage == null ? null : File(pickedImage.path);
+
+    setState(() {
+      image = pickedImageFile;
+    });
+  }
+
+  // Delete Selected image
+
+  removeSelectedImage() async {
+    setState(() {
+      image = null;
+    });
+  }
+
+  UploadProductController uploadProductController = UploadProductController();
+  uploadData() async {
+    String uploadError = await uploadProductController.uploadDataToFirebase(
+        name: productNameController.text,
+        desc: productDescController.text,
+        productImage: image!,
+        price: priceController.text,
+        productCategory: productCategoryController.text,
+        quantity: productQuantityController.text);
+    if (uploadError != 'Success') {
+      // ignore: use_build_context_synchronously
+      return ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(uploadError.toString())));
+    } else {
+      // ignore: use_build_context_synchronously
+      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Congrats! You successfully uploaded data')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +92,7 @@ class UploadScreen extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   primary: Colors.purple,
                   minimumSize: const Size(double.infinity, 50)),
-              onPressed: () {},
+              onPressed: uploadData,
               icon: const Icon(Icons.upload),
               label: const Text('Upload')),
         ),
@@ -53,12 +130,24 @@ class UploadScreen extends StatelessWidget {
                           height: 150,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            color: Colors.purple,
                           ),
-                          child: Image.asset(
-                            AssetsPath.clothes,
-                            fit: BoxFit.cover,
-                          ),
+                          child: image == null
+                              ? Container(
+                                  height: 130,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.purple,
+                                  ),
+                                )
+                              : Container(
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    // color: Colors.purple,
+                                  ),
+                                  child: Image.file(image!),
+                                ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 30.0),
@@ -67,19 +156,19 @@ class UploadScreen extends StatelessWidget {
                               ElevatedButton.icon(
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.purple),
-                                  onPressed: () {},
+                                  onPressed: getImageFromCamera,
                                   icon: const Icon(Icons.camera),
                                   label: const Text('Camera')),
                               ElevatedButton.icon(
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.purple),
-                                  onPressed: () {},
+                                  onPressed: getImageFromGallery,
                                   icon: const Icon(Icons.browse_gallery),
                                   label: const Text('Gallery  ')),
                               ElevatedButton.icon(
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.purple),
-                                  onPressed: () {},
+                                  onPressed: removeSelectedImage,
                                   icon: const Icon(Icons.remove_circle),
                                   label: const Text('Remove')),
                             ],
@@ -107,7 +196,7 @@ class UploadScreen extends StatelessWidget {
   titleField() => SizedBox(
         width: 150,
         child: TextField(
-          // controller: emailController,
+          controller: productNameController,
           decoration: InputDecoration(
             hintText: 'Product name',
             filled: true,
@@ -120,7 +209,10 @@ class UploadScreen extends StatelessWidget {
         width: 150,
         child: TextField(
           keyboardType: TextInputType.number,
-          // controller: passwordController,
+          controller: priceController,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+          ],
           decoration: InputDecoration(
             hintText: 'Price \$',
             filled: true,
@@ -128,9 +220,10 @@ class UploadScreen extends StatelessWidget {
           ),
         ),
       );
+
   descField() => TextField(
         maxLines: 10,
-        // controller: emailController,
+        controller: productDescController,
         decoration: InputDecoration(
             hintText: 'Product description',
             filled: true,
@@ -138,18 +231,19 @@ class UploadScreen extends StatelessWidget {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       );
+
   quantityField() => TextField(
         keyboardType: TextInputType.number,
-
-        // controller: emailController,
+        controller: productQuantityController,
         decoration: InputDecoration(
           hintText: 'Product Quantity',
           filled: true,
           fillColor: kFillColor,
         ),
       );
+
   categoryField() => TextField(
-        // controller: emailController,
+        controller: productCategoryController,
         decoration: InputDecoration(
           hintText: 'Product Category',
           filled: true,

@@ -1,7 +1,8 @@
-import 'package:eshop/providers/cart_model_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:eshop/providers/cart_model_provider.dart';
 
 class CartItemWidget extends StatelessWidget {
   const CartItemWidget({
@@ -40,7 +41,7 @@ class CartItemWidget extends StatelessWidget {
               height: 150,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(image), fit: BoxFit.cover),
+                    image: NetworkImage(image), fit: BoxFit.cover),
               ),
             ),
             Column(

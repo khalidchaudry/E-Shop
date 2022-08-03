@@ -42,7 +42,7 @@ class FeedScreen extends StatelessWidget {
                                         DetailsPageWidget(index: index))),
                             child: Padding(
                               padding: const EdgeInsets.only(top: 20.0),
-                              child: Image.asset(
+                              child: Image.network(
                                 productList[index].productImage,
                                 height: 150,
                                 width: 150,

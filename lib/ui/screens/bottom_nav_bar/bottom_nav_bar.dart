@@ -4,7 +4,9 @@ import 'package:eshop/ui/screens/profile_screen/profile_screen.dart';
 import 'package:eshop/ui/screens/search_screen/search_screen.dart';
 import 'package:eshop/ui/screens/upload_screen.dart/upload_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../providers/product_model_provider.dart';
 import '../home_screen/home_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -26,6 +28,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   ];
   @override
   Widget build(BuildContext context) {
+    final productModel = Provider.of<ProductsModelProvider>(context);
+    productModel.fetchProductsData();
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,

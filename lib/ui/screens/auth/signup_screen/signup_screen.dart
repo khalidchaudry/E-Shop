@@ -48,7 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       isLoading = false;
     });
 
-    if (checkError != 'Success') {
+    if (checkError == 'Success') {
       return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Congarats! Your account successfully created')));
     } else {
