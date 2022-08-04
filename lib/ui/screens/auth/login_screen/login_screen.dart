@@ -17,18 +17,24 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
   loginUser() async {
     setState(() {
-      isLoading == false;
+      isLoading == true;
     });
+    if (firebaseAuth.currentUser != null) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const BottomNavBar()));
+    }
+
     String res = await authController.loginUser(
         email: emailController.text, password: passwordController.text);
     setState(() {
-      isLoading == true;
+      isLoading == false;
     });
     if (res == 'Successfully') {
       return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Congarats! You are  logged in successfully')));
     } else {
-      Navigator.pushNamed(context, '/bottom_nav_bar');
+      return ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(res)));
     }
   }
 
@@ -58,13 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     primary: Colors.purple,
                     shape: const StadiumBorder(),
                     minimumSize: const Size(double.infinity, 60)),
-                onPressed: () {
-                  loginUser();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const BottomNavBar()));
-                },
+                onPressed: () => loginUser(),
                 child: isLoading
                     ? const Center(
                         child: CircularProgressIndicator(),

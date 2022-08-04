@@ -21,16 +21,12 @@ class UploadProductController {
       {required String name,
       required String desc,
       required File productImage,
-      required String price,
+      required double price,
       required String productCategory,
-      required String quantity}) async {
+      required int quantity}) async {
     String uploadError = 'Something wrong';
     try {
-      if (name.isNotEmpty &&
-          desc.isNotEmpty &&
-          price.isNotEmpty &&
-          quantity.isNotEmpty &&
-          productCategory.isNotEmpty) {
+      if (name.isNotEmpty && desc.isNotEmpty && productCategory.isNotEmpty) {
         String imageUrl =
             await uploadImageToFirebaseStorage(image: productImage);
         await fireStore.collection('products').doc().set({

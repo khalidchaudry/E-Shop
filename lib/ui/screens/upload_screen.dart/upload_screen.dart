@@ -15,6 +15,7 @@ class UploadScreen extends StatefulWidget {
 }
 
 class _UploadScreenState extends State<UploadScreen> {
+  bool isLoading = false;
   TextEditingController productNameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
 
@@ -24,12 +25,6 @@ class _UploadScreenState extends State<UploadScreen> {
   TextEditingController productQuantityController = TextEditingController();
 
   File? image;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   uploadData();
-  // }
 
   // Pick image with camera
   getImageFromCamera() async {
@@ -65,13 +60,19 @@ class _UploadScreenState extends State<UploadScreen> {
 
   UploadProductController uploadProductController = UploadProductController();
   uploadData() async {
+    setState(() {
+      isLoading = true;
+    });
     String uploadError = await uploadProductController.uploadDataToFirebase(
         name: productNameController.text,
         desc: productDescController.text,
         productImage: image!,
-        price: priceController.text,
+        price: double.parse(priceController.text),
         productCategory: productCategoryController.text,
-        quantity: productQuantityController.text);
+        quantity: int.parse(productQuantityController.text));
+    setState(() {
+      isLoading = false;
+    });
     if (uploadError != 'Success') {
       // ignore: use_build_context_synchronously
       return ScaffoldMessenger.of(context)
@@ -94,7 +95,11 @@ class _UploadScreenState extends State<UploadScreen> {
                   minimumSize: const Size(double.infinity, 50)),
               onPressed: uploadData,
               icon: const Icon(Icons.upload),
-              label: const Text('Upload')),
+              label: isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : const Text('Upload')),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -142,6 +147,7 @@ class _UploadScreenState extends State<UploadScreen> {
                                 )
                               : Container(
                                   height: 150,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
                                     // color: Colors.purple,

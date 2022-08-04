@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../search_screen/search_screen.dart';
 import 'widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,8 +18,15 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              readOnly: true,
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>  SearchScreen()));
+              },
+              decoration: const InputDecoration(
                   border: InputBorder.none,
                   filled: true,
                   fillColor: Colors.white,

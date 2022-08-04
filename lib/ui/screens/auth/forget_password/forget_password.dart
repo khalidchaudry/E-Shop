@@ -1,13 +1,25 @@
 import 'package:eshop/ui/screens/constants/constants.dart';
-import 'package:eshop/ui/screens/global_widgets/global_widgets.dart';
 import 'package:flutter/material.dart';
 
-class ForgetPasswordScreen extends StatelessWidget {
-  ForgetPasswordScreen({Key? key}) : super(key: key);
+class ForgetPasswordScreen extends StatefulWidget {
+  const ForgetPasswordScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
+}
+
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+  bool isLoading = false;
   TextEditingController emailController = TextEditingController();
 
   forgetPassword() async {
+    setState(() {
+      isLoading = true;
+    });
     await authController.forgetPassword(email: emailController.text);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -22,7 +34,16 @@ class ForgetPasswordScreen extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-            RoundedButton(press: forgetPassword, title: "Reset Password"),
+            ElevatedButton(
+                onPressed: forgetPassword,
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.purple,
+                    minimumSize: const Size(double.infinity, 50)),
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : const Text('Reset Password')),
           ],
         ),
       ),

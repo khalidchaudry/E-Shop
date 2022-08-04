@@ -22,8 +22,7 @@ class ProductsModelProvider with ChangeNotifier {
     //     productQuantity: 1.toInt()),
   ];
   Future<void> fetchProductsData() async {
-    await fireStore.collection('products').get().then((QuerySnapshot snapshot) {
-      productModelProvider = [];
+    await fireStore.collection('users').get().then((QuerySnapshot snapshot) {
       for (var element in snapshot.docs) {
         productModelProvider.insert(
             0,
@@ -37,5 +36,16 @@ class ProductsModelProvider with ChangeNotifier {
       }
     });
     notifyListeners();
+  }
+
+  List<ProductsModel> searchQuery({required String searchText}) {
+    List searchList = productModelProvider
+        .where((element) => element.productName
+            .toLowerCase()
+            .contains(searchText.toLowerCase()))
+        .toList();
+    notifyListeners();
+
+    return [...searchList];
   }
 }

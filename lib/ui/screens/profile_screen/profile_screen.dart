@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eshop/ui/screens/assets_path/assets_path.dart';
-import 'package:eshop/ui/screens/auth/login_screen/login_screen.dart';
 import 'package:eshop/ui/screens/cart_screen/cart_screen.dart';
 import 'package:eshop/ui/screens/constants/constants.dart';
 import 'package:eshop/ui/screens/profile_screen/widgets/widgets.dart';
@@ -34,7 +32,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       eMial = documentSnapshot.get('Email');
       imageUrl = documentSnapshot.get('productImage');
       phoneNumber = documentSnapshot.get('cellNumber');
+      print('check error: ${eMial.toString()}');
     });
+    print('check error: ${imageUrl.toString()}');
+
+    imageUrl.toString();
   }
 
   @override
@@ -53,12 +55,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: 10,
               ),
               Center(
-                child: Image.asset(
-                  AssetsPath.laptop,
-                  height: 250,
-                  fit: BoxFit.cover,
-                ),
-              ),
+                  child: CircleAvatar(
+                radius: 70,
+                backgroundImage: NetworkImage(imageUrl),
+              )),
               const SizedBox(
                 height: 10,
               ),
@@ -126,13 +126,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 thickness: 2,
               ),
               ClickAbleListTileWidget(
-                  leading: Icons.person,
-                  title: 'Logout',
-                  trailing: Icons.logout,
-                  press: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginScreen()))),
+                leading: Icons.person,
+                title: 'Logout',
+                trailing: Icons.logout,
+                press: () => firebaseAuth.signOut(),
+              ),
             ],
           ),
         ));

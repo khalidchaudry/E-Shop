@@ -21,7 +21,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   List dataList = [
     const HomeScreen(),
     const FeedScreen(),
-    const SearchScreen(),
+    SearchScreen(),
     const CartScreen(),
     const UploadScreen(),
     const ProfileScreen()

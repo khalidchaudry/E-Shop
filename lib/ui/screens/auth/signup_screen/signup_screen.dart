@@ -38,6 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       isLoading = true;
     });
+
     String checkError = await authController.registerUser(
         userName: nameController.text,
         email: emailController.text,
@@ -52,8 +53,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Congarats! Your account successfully created')));
     } else {
-      return ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(checkError.toString())));
+      return ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill all fields')));
     }
   }
 
@@ -118,7 +119,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       minimumSize: const Size(double.infinity, 60)),
                   onPressed: () {
                     signUpUser();
-                    Navigator.pop(context);
                   },
                   child: isLoading
                       ? const Center(
