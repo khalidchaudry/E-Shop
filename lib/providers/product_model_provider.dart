@@ -22,7 +22,9 @@ class ProductsModelProvider with ChangeNotifier {
     //     productQuantity: 1.toInt()),
   ];
   Future<void> fetchProductsData() async {
-    await fireStore.collection('users').get().then((QuerySnapshot snapshot) {
+    await fireStore.collection('products').get().then((QuerySnapshot snapshot) {
+      productModelProvider = [];
+
       for (var element in snapshot.docs) {
         productModelProvider.insert(
             0,
